@@ -22,6 +22,7 @@ import java.util.Optional;
  * @since 1.0
  */
 @RestController
+@RequestMapping("api/v1")
 public class UserController {
     final private UserService userService;
 
@@ -36,8 +37,8 @@ public class UserController {
         return userService.getCurrentUser(userPrincipal);
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("users")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Iterable<User> getUsers(
             @RequestParam(required = false) Optional<Long> publicId,
             @RequestParam(required = false) Optional<String> name,

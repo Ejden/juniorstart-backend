@@ -8,9 +8,13 @@ import com.juniorstart.juniorstart.payload.ChangeMailRequest;
 import com.juniorstart.juniorstart.payload.ChangePasswordRequest;
 import com.juniorstart.juniorstart.repository.UserDao;
 import com.juniorstart.juniorstart.security.UserPrincipal;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -18,10 +22,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,19 +38,19 @@ import static org.junit.Assert.assertTrue;
  * @version 1.2
  * @since 1.1
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
     @Mock
-    UserDao userDao;
+    private UserDao userDao;
     @InjectMocks
-    UserService userService;
-    UUID uuid = UUID.randomUUID();
-    User user;
-    User mockUser;
-    UserPrincipal userPrincipal;
-    ChangePasswordRequest passwordRequest;
-    ChangeMailRequest mailRequest;
+    private UserService userService;
+    private UUID uuid = UUID.randomUUID();
+    private User user;
+    private User mockUser;
+    private UserPrincipal userPrincipal;
+    private ChangePasswordRequest passwordRequest;
+    private ChangeMailRequest mailRequest;
 
     /** Create user for further tests.
      */
@@ -60,7 +67,8 @@ public class UserServiceTest {
                 .emailVerified(true)
                 .password("Password")
                 .provider(AuthProvider.local)
-                .providerId("id").build();
+                .providerId("id")
+                .build();
 
         mockUser = user.getClass().newInstance();
         userPrincipal = UserPrincipal.create(user);

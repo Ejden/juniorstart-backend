@@ -81,6 +81,10 @@ public class UserService {
         return userDao.findByEmail(email);
     }
 
+    /** Get list of users by optional parameters.
+     * @param publicId, name, age and email The current logged user.
+     * @return list of users
+     */
     public Iterable<User> getUsersByProps(
             Optional<Long> publicId,
             Optional<String> name,
@@ -99,6 +103,11 @@ public class UserService {
         return userDao.findAll(userSpecification);
     }
 
+    /** Get Specification for age based on expected parameter and specifier. This will handle filters on frontend like
+     * age equal, age grater
+     * @param numberParserResponse response from parser, contains number and NumberSpecifier like grater or equal
+     * @return Specification for JpaQuery
+     */
     private Specification<User> getSpecificationForAge(UrlNumberParser.UrlNumberParserResponse<Integer> numberParserResponse) {
         switch (numberParserResponse.getNumberSpecifier()) {
             case EQUAL:

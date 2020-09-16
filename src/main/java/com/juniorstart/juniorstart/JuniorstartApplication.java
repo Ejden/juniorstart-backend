@@ -2,6 +2,8 @@ package com.juniorstart.juniorstart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
